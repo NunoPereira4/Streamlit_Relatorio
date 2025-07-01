@@ -1,0 +1,6 @@
+streamlit
+pymysql
+pandas
+sqlalchemy
+cryptography
+plotly
