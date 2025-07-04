@@ -5,6 +5,31 @@ import plotly.express as px
 import urllib.parse
 import numpy as np
 
+#Autenticação
+USERS = st.secrets["users"]
+
+def login():
+    st.title("Autenticação necessária")
+    with st.form("login"):
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submitted = st.form_submit_button("Entrar")
+        if submitted:
+            if username in USERS and USERS[username] == password:
+                st.session_state["autenticado"] = True
+                st.session_state["user"] = username
+                st.success(f"Bem-vindo, {username}!")
+                st.rerun()
+            else:
+                st.error("Credenciais inválidas.")
+
+if "autenticado" not in st.session_state:
+    st.session_state["autenticado"] = False
+
+if not st.session_state["autenticado"]:
+    login()
+    st.stop()
+
 st.set_page_config(layout="wide")
 
 st.markdown("""
@@ -83,14 +108,18 @@ st.sidebar.markdown(
     unsafe_allow_html=True
 )
 
-semana_range = st.sidebar.slider(
-    label="Intervalo de Semana Letiva",
-    min_value=semana_min,
-    max_value=semana_max,
-    value=(semana_min, semana_max),
-    step=1,
-    label_visibility="collapsed"
-)
+if semana_min < semana_max:
+    semana_range = st.sidebar.slider(
+        label="Intervalo de Semana Letiva",
+        min_value=semana_min,
+        max_value=semana_max,
+        value=(semana_min, semana_max),
+        step=1,
+        label_visibility="collapsed"
+    )
+else:
+    st.sidebar.warning("Não há semanas letivas disponíveis para os filtros selecionados.")
+    semana_range = (semana_min, semana_max)
 
 excluir_avaliacoes = st.sidebar.checkbox("Excluir avaliações e exames", value=True)
 
