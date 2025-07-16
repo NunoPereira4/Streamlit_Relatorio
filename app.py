@@ -200,6 +200,16 @@ if not df.empty:
     df_pagina = df.iloc[inicio:fim]
 
     st.subheader("Registos de Presenças por Aula (Filtrados)")
+
+    st.markdown("""
+    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 0.5rem;">
+        <strong>Impacto</strong>
+        <span title="🔴 Menos de 10 presenças\n🟡 Entre 10 e 15 presenças\n🟢 Mais de 15 presenças"
+            style="color: red; cursor: help; font-weight: bold; border: 1.5px solid red; border-radius: 50%; 
+                    width: 18px; height: 18px; text-align: center; line-height: 16px;">i</span>
+    </div>
+    """, unsafe_allow_html=True)
+
     st.dataframe(df_pagina, use_container_width=True, hide_index=True)
 
     df['Turno Simples'] = (
