@@ -202,8 +202,6 @@ if not df.empty:
     st.subheader("Registos de Presenças por Aula (Filtrados)")
     st.dataframe(df_pagina, use_container_width=True, hide_index=True)
 
-    st.metric("Total de Presenças", f"{df['Presenças'].sum():,}")
-
     df['Turno Simples'] = (
         df['Componente'].fillna('') + 
         df['Turno'].astype(str) + 
